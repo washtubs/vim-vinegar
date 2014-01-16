@@ -5,6 +5,9 @@
 > dressing. I mean that they don't mix well!
 > - Drew Neil
 
+Update: This fork of vinegar.vim works with NERDTree instead for a better user
+        experience.
+
 You know what netrw is, right?  The built in directory browser?  Well,
 vinegar.vim enhances netrw, partially in an attempt to mitigate the need for
 more disruptive ["project drawer"][Oil and vinegar] style plugins.

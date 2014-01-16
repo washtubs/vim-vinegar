@@ -14,11 +14,6 @@ function! s:fnameescape(file) abort
   endif
 endfunction
 
-let g:netrw_sort_sequence = '[\/]$,*,\%(' . join(map(split(&suffixes, ','), 'escape(v:val, ".*$~")'), '\|') . '\)[*@]\=$'
-let s:escape = 'substitute(escape(v:val, ".$~"), "*", ".*", "g")'
-let g:netrw_list_hide = join(map(split(&wildignore, ','), '"^".' . s:escape . '. "$"'), ',') . ',^\.\.\=/\=$'
-let g:netrw_banner = 0
-
 nnoremap <silent> <Plug>VinegarUp :if empty(expand('%'))<Bar>edit .<Bar>else<Bar>edit %:h<Bar>call <SID>seek(expand('%:t'))<Bar>endif<CR>
 if empty(maparg('-', 'n'))
   nmap - <Plug>VinegarUp
@@ -32,25 +27,25 @@ endfunction
 
 augroup vinegar
   autocmd!
-  autocmd FileType netrw call s:setup_vinegar()
+  autocmd FileType nerdtree call s:setup_vinegar()
 augroup END
 
 function! s:escaped(first, last) abort
   let files = getline(a:first, a:last)
   call filter(files, 'v:val !~# "^\" "')
   call map(files, 'substitute(v:val, "[/*|@=]\\=\\%(\\t.*\\)\\=$", "", "")')
-  return join(map(files, 'fnamemodify(b:netrw_curdir."/".v:val,":~:.")'), ' ')
+  " Strip any whitespace
+  call map(files, 'substitute(v:val, "^\\s*\\(.\\{-}\\)\\s*$", "\\1", "")')
+  let curdir = b:NERDTreeRoot.path.str()
+  return join(map(files, 'fnamemodify(curdir."/".v:val,":~:.")'), ' ')
 endfunction
 
 function! s:setup_vinegar() abort
-  nmap <buffer> - <Plug>VinegarUp
+  " NERDTree move up
+  nmap <buffer> - u
   nnoremap <buffer> ~ :edit ~/<CR>
   nnoremap <buffer> . :<C-U> <C-R>=<SID>escaped(line('.'), line('.') - 1 + v:count1)<CR><Home>
   xnoremap <buffer> . <Esc>: <C-R>=<SID>escaped(line("'<"), line("'>"))<CR><Home>
   nmap <buffer> ! .!
   xmap <buffer> ! .!
-  nnoremap <buffer> <silent> cd :exe 'keepjumps cd ' .<SID>fnameescape(b:netrw_curdir)<CR>
-  nnoremap <buffer> <silent> cl :exe 'keepjumps lcd '.<SID>fnameescape(b:netrw_curdir)<CR>
-  exe 'syn match netrwSuffixes =\%(\S\+ \)*\S\+\%('.join(map(split(&suffixes, ','), s:escape), '\|') . '\)[*@]\=\S\@!='
-  hi def link netrwSuffixes SpecialKey
 endfunction
