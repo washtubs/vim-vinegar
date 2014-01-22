@@ -14,13 +14,25 @@ function! s:fnameescape(file) abort
   endif
 endfunction
 
-nnoremap <silent> <Plug>VinegarUp :if empty(expand('%'))<Bar>edit .<Bar>else<Bar>edit %:h<Bar>call <SID>seek(expand('%:t'))<Bar>endif<CR>
+nnoremap <silent> <Plug>VinegarUp :call <SID>opendir('edit')<CR>
+nnoremap <silent> <Plug>VinegarSplitUp :call <SID>opendir('split')<CR>
+nnoremap <silent> <Plug>VinegarVerticalSplitUp :call <SID>opendir('vsplit')<CR>
 if empty(maparg('-', 'n'))
   nmap - <Plug>VinegarUp
 endif
 
+function! s:opendir(cmd)
+	if empty(expand('%'))
+		execute a:cmd '.'
+	else
+		let currfile = expand('%:t')
+		execute a:cmd '%:h'
+		call <SID>seek(currfile)
+	endif
+endfunction
+
 function! s:seek(file)
-  let pattern = '^'.escape(expand('#:t'), '.*[]~\').'[/*|@=]\=\%($\|\t\)'
+  let pattern = '^\s*'.escape(a:file, '.*[]~\').'[/*|@=]\=\%($\|\t\)'
   call search(pattern, 'wc')
   return pattern
 endfunction
@@ -41,8 +53,7 @@ function! s:escaped(first, last) abort
 endfunction
 
 function! s:setup_vinegar() abort
-  " NERDTree move up
-  nmap <buffer> - u
+	execute 'nmap <buffer> -' g:NERDTreeMapUpdir
   nnoremap <buffer> ~ :edit ~/<CR>
   nnoremap <buffer> . :<C-U> <C-R>=<SID>escaped(line('.'), line('.') - 1 + v:count1)<CR><Home>
   xnoremap <buffer> . <Esc>: <C-R>=<SID>escaped(line("'<"), line("'>"))<CR><Home>
