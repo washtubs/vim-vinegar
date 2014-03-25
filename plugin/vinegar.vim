@@ -22,13 +22,13 @@ if empty(maparg('-', 'n'))
 endif
 
 function! s:opendir(cmd)
-	if empty(expand('%'))
-		execute a:cmd '.'
-	else
-		let currfile = expand('%:t')
-		execute a:cmd '%:h'
-		call <SID>seek(currfile)
-	endif
+  if empty(expand('%'))
+    execute a:cmd '.'
+  else
+    let currfile = expand('%:t')
+    execute a:cmd '%:h'
+    call <SID>seek(currfile)
+  endif
 endfunction
 
 function! s:seek(file)
@@ -53,7 +53,7 @@ function! s:escaped(first, last) abort
 endfunction
 
 function! s:setup_vinegar() abort
-	execute 'nmap <buffer> -' g:NERDTreeMapUpdir
+  execute 'nmap <buffer> -' g:NERDTreeMapUpdir
   nnoremap <buffer> ~ :edit ~/<CR>
   nnoremap <buffer> . :<C-U> <C-R>=<SID>escaped(line('.'), line('.') - 1 + v:count1)<CR><Home>
   xnoremap <buffer> . <Esc>: <C-R>=<SID>escaped(line("'<"), line("'>"))<CR><Home>
