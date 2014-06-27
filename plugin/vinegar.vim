@@ -32,7 +32,7 @@ function! s:opendir(cmd)
 endfunction
 
 function! s:seek(file)
-  let pattern = '^\s*'.escape(a:file, '.*[]~\').'[/*|@=]\=\%($\|\t\)'
+  let pattern = '^\s*'.escape(a:file, '.*[]~\')
   call search(pattern, 'wc')
   return pattern
 endfunction
