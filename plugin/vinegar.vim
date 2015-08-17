@@ -1,5 +1,5 @@
 " vinegar.vim - combine with netrw to create a delicious salad dressing
-" Maintainer:   Tim Pope <http://tpo.pe/>
+" Maintainer:   Dhruva Sagar <http://dhruvasagar.com/>
 
 if exists("g:loaded_vinegar") || v:version < 700 || &cp
   finish
@@ -15,11 +15,13 @@ function! s:fnameescape(file) abort
 endfunction
 
 nnoremap <silent> <Plug>VinegarUp :call <SID>opendir('edit')<CR>
-nnoremap <silent> <Plug>VinegarSplitUp :call <SID>opendir('split')<CR>
-nnoremap <silent> <Plug>VinegarVerticalSplitUp :call <SID>opendir('vsplit')<CR>
 if empty(maparg('-', 'n'))
   nmap - <Plug>VinegarUp
 endif
+
+nnoremap <silent> <Plug>VinegarTabUp :call <SID>opendir('tabedit')<CR>
+nnoremap <silent> <Plug>VinegarSplitUp :call <SID>opendir('split')<CR>
+nnoremap <silent> <Plug>VinegarVerticalSplitUp :call <SID>opendir('vsplit')<CR>
 
 function! s:opendir(cmd)
   if empty(expand('%'))
@@ -32,7 +34,7 @@ function! s:opendir(cmd)
 endfunction
 
 function! s:seek(file)
-  let pattern = '^\s*'.escape(a:file, '.*[]~\')
+  let pattern = '^\%(| \)*'.escape(a:file, '.*[]~\').'[/*|@=]\=\%($\|\t\)'
   call search(pattern, 'wc')
   return pattern
 endfunction
@@ -59,4 +61,6 @@ function! s:setup_vinegar() abort
   xnoremap <buffer> . <Esc>: <C-R>=<SID>escaped(line("'<"), line("'>"))<CR><Home>
   nmap <buffer> ! .!
   xmap <buffer> ! .!
+  nnoremap <buffer> <silent> cg :exe 'keepjumps cd ' .<SID>fnameescape(b:netrw_curdir)<CR>
+  nnoremap <buffer> <silent> cl :exe 'keepjumps lcd '.<SID>fnameescape(b:netrw_curdir)<CR>
 endfunction
