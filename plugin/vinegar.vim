@@ -34,7 +34,7 @@ function! s:opendir(cmd)
 endfunction
 
 function! s:seek(file)
-  let pattern = '^\%(| \)*'.escape(a:file, '.*[]~\').'[/*|@=]\=\%($\|\t\)'
+  let pattern = '^ *\%(▸ \)\?'.escape(a:file, '.*[]~\').'\>'
   call search(pattern, 'wc')
   return pattern
 endfunction
