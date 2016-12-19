@@ -36,11 +36,11 @@ to even consider.
 ## Installation
 
 If you don't have a preferred installation method, I recommend
-installing [pathogen.vim](https://github.com/dhruvasagar/vim-pathogen), and
+installing [pathogen.vim](https://github.com/tpope/vim-pathogen), and
 then simply copy and paste:
 
     cd ~/.vim/bundle
-    git clone git://github.com/tpope/vim-vinegar.git
+    git clone git://github.com/dhruvasagar/vim-vinegar.git
 
 ## License
 
