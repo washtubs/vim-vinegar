@@ -36,7 +36,7 @@ to even consider.
 ## Installation
 
 If you don't have a preferred installation method, I recommend
-installing [pathogen.vim](https://github.com/tpope/vim-pathogen), and
+installing [pathogen.vim](https://github.com/dhruvasagar/vim-pathogen), and
 then simply copy and paste:
 
     cd ~/.vim/bundle
